@@ -1,4 +1,4 @@
-import {Menu, Dropdown,Button} from 'antd';
+import {Menu, Dropdown} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
 const AlgorithmDropDown = ({
   currentAlgorithm,

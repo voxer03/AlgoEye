@@ -2,7 +2,6 @@ import { useState } from "react";
 import HomeHeader from "../HomeHeader/HomeHeader";
 import generateRandomizedArray from "../../helpers/RandomizeArray";
 import SortingBar from "../sortingBars/SortingBar";
-import { AutoComplete } from "antd";
 import bubbleSort from "../../algorithms/BubbleSort";
 import selectionSort from "../../algorithms/selectionSort";
 import MergeSortWrapper from "../../algorithms/MergeSort";
