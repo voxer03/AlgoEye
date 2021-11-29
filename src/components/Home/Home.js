@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import HomeHeader from "../HomeHeader/HomeHeader";
 import generateRandomizedArray from "../../helpers/RandomizeArray";
 import SortingBar from "../sortingBars/SortingBar";
@@ -7,6 +7,12 @@ import selectionSort from "../../algorithms/selectionSort";
 import MergeSortWrapper from "../../algorithms/MergeSort";
 import insertionSort from "../../algorithms/insertionSort";
 import quickSortWrapper from "../../algorithms/quickSort,";
+import BubbleTheory from "./bubbleTheory/BubbleTheory";
+import QuickSortTheory from "./quickSortTheory/QuickSortTheory";
+import MergeSortTheory from "./mergeSortTheory/MergeSortTheory";
+import SelectionSortTheory from "./selectionSortTheory/SelectionSortTheory";
+import InsertionSortTheory from "./insertionSortTheory/InsertionSortTheory";
+
 const Home = () => {
     let ARRAY_SIZE = 50;
     const [currentAlgorithm, setCurrentAlgorithm] = useState('Bubble Sort');
@@ -24,6 +30,91 @@ const Home = () => {
         'QuickSort',
         'Merge Sort',
       ];
+
+
+      //making site responsive according to width of the viewport width
+      const [width, setWindowWidth] = useState(0);
+      
+      const responsive = {
+        isOnMobile: width < 1000
+      }
+      const responsiveDesignDiv = () => {
+        const divCss = {
+          display:'flex',
+          flexDirection:'row',
+          height:'100%',
+          width: '100%',
+          overflow:'hidden'
+        }
+
+        const divMobileCss = {
+          display:'flex',
+          flexDirection:'column',
+          height:'200vh',
+          width: '100%',
+          overflow:'hidden'
+        }
+         
+        return responsive.isOnMobile? divMobileCss: divCss;
+      }
+
+      const responsiveDesignTheory = () =>{
+        const theoryCss = {
+          width:'35%',
+          height:'90vh',
+          overflow:'hidden',
+          overflowY:'scroll',
+          padding: '0px 2vw 0px 5vw'
+        }
+        const theoryMobileCss = {
+          width:'97%',
+          height:'150vh',
+          overflow:'hidden',
+          overflowY:'scroll',
+          overflowX:'scroll',
+          padding: '0px 2vw 0px 3vw'
+        }
+
+        return responsive.isOnMobile? theoryMobileCss : theoryCss;
+      }
+
+      const responsiveDesignBars = () => {
+        const barCss = {
+          display:'flex',
+          flexDirection:'row',
+          height:'100%',
+          width:'50%',
+          padding:'0px 0px 0px 5vw',
+              
+        }
+        const barMobileCss = {
+          display:'flex',
+          flexDirection:'row',
+          height:'100%',
+          width:'90%',
+          padding:'0px 0px 0px 5vw',
+              
+        }
+
+        return responsive.isOnMobile? barMobileCss: barCss;
+      }
+
+
+      const updateDimensions = () => {
+        const width = window.innerWidth;
+        setWindowWidth(width);
+        console.log(width);
+      }
+      useEffect(() => { 
+
+        updateDimensions();
+
+        window.addEventListener("resize", updateDimensions);
+        return () => 
+          window.removeEventListener("resize",updateDimensions);
+      }, []);
+        
+
 
       const onRandomize = () => {
         if (isVisualizing) return;
@@ -61,8 +152,9 @@ const Home = () => {
                                   array:randomizedArray,
                                   setArray:setRandomizedArray,
                                   setColorArray:setColorsArray,
-                                  visualizationSpeed:visualizationSpeed
+                                  visualizationSpeed:visualizationSpeed,
                                 });
+                              
                                 break;
           
           case 'Selection Sort':
@@ -72,6 +164,7 @@ const Home = () => {
                                   setColorsArray:setColorsArray,
                                   visualizationSpeed:visualizationSpeed
                                 })
+                                
                                 break;
           case 'Merge Sort'    :
                                 await MergeSortWrapper({
@@ -82,6 +175,7 @@ const Home = () => {
                                   visualizationSpeed: visualizationSpeed,
                                   setColorsArray: setColorsArray,
                                 });
+                                
                                 break;
           case 'QuickSort' : 
                                 await quickSortWrapper({
@@ -91,8 +185,8 @@ const Home = () => {
                                   setArray:setRandomizedArray,
                                   visualizationSpeed:visualizationSpeed,
                                   setColorsArray:setColorsArray
-                                })
-
+                                });
+                                
                                 break;
           case 'Insertion Sort': 
                                 await insertionSort({
@@ -100,7 +194,7 @@ const Home = () => {
                                   setArray:setRandomizedArray,
                                   setColorsArray:setColorsArray,
                                   visualizationSpeed:visualizationSpeed
-                                })
+                                });
                                 
                                 break;
           
@@ -111,7 +205,7 @@ const Home = () => {
         setIsVisualizing(false);
 
       }
-
+      
     return ( 
         <div style = {{
           display:'flex',
@@ -127,15 +221,17 @@ const Home = () => {
                 onStart={visualizeStart}
                 isVisualizing = {isVisualizing}
             ></HomeHeader>
-            
-            <div style ={{
-              display:'flex',
-              flexDirection:'row',
-              height:'100%',
-              width:'95vw',
-              padding:'0px 0px 0px 0px',
-              margin: 'auto'
-            }}
+            <div className = "baranddata" style ={responsiveDesignDiv()}>
+              <div className = "theorydata" style = {responsiveDesignTheory()}>
+              {/*conditions to check which algorithm is active and showing corresponding theory component */}
+              {currentAlgorithm === 'Bubble Sort' && <BubbleTheory></BubbleTheory>}
+              {currentAlgorithm === 'Selection Sort' && <SelectionSortTheory></SelectionSortTheory> }
+              {currentAlgorithm === 'Insertion Sort' && <InsertionSortTheory></InsertionSortTheory>}
+              {currentAlgorithm === 'QuickSort' && <QuickSortTheory></QuickSortTheory>}
+              {currentAlgorithm === 'Merge Sort' && <MergeSortTheory></MergeSortTheory>} 
+              {/* <SelectionSortTheory></SelectionSortTheory> */}
+              </div>
+            <div className = 'bars' style ={responsiveDesignBars()}
             >
               {randomizedArray.map((item,index)=>{
                 const height = (item/maxItem) * 100;
@@ -161,6 +257,8 @@ const Home = () => {
                   </div>
                 );
               })}
+            </div>
+                
             </div>
         </div>
      );

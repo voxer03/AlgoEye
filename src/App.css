@@ -15,6 +15,23 @@
   align-items: center;
 }
 
+@media screen and (max-width:'700px') {
+  .baranddata{
+    display: flex;
+    flex-direction: column;
+    height:200vh;
+    width:100%;
+  }
+
+  .theorydata{
+    width:100%;
+  }
+  .barsdata{
+    width:100%;
+  }
+
+}
+
 
 
 
