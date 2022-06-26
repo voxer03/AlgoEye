@@ -39,7 +39,7 @@ const HomeHeader = ({
             height={30}
             style={{ cursor: 'pointer' }}
             onClick={() =>
-            openUrl('https://github.com/voxer03')
+            openUrl('https://github.com/Aditya007it')
             }
             ></img>
 
